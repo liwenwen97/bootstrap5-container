@@ -1,21 +1,28 @@
 'use client'
 import React from 'react'
 import Editor from '@monaco-editor/react';
-export default function SnippetEdit() {
-  // const [code, setCode] = useState(snippet.code)
+
+interface CodeEditProps {
+  onCodeChange: (code: string) => void;
+  code: string;
+}
+
+export default function CodeEdit({ onCodeChange, code }: CodeEditProps) {
+
   const handleChange = (code: string = '') => {
-    console.log(code)
+    onCodeChange(code);
   }
+
   return (
-    <div>
-      <Editor theme='vs-dark' height="40vh" language='javascript' options={{
+    <div className='border-dashed border-gray-300 border-b pb-4 relative overflow-hidden'>
+      <Editor theme='light' height="400px" language='html' options={{
         minimap: {
           enabled: false
-        }
-      }} onChange={handleChange} />
-      {/* <form action={editSnippetWithCodeId}>
-        <button className='px-2 py-1 border border-teal-500 rounded mt-1'>Save</button>
-      </form> */}
+        },
+        wordWrap: "on",
+        wordWrapColumn: 80,
+        fontSize: 14,
+      }} value={code} onChange={handleChange} />
     </div>
   )
 }

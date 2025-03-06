@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.fullscreen-background {
+  background-color: white;
+}

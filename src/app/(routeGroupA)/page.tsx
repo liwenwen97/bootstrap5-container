@@ -1,24 +1,49 @@
 'use client'
 import React, { useState } from 'react';
 // import { db } from "@/db";
-import Collapse from '@/components/Collapse';
-import CodeEdit from '@/components/code-edit';
-const Home = () => {
-  // const [htmlContent, setHtmlContent] = useState('<h1>Hello World</h1>');
+import PannelCollapse from '@/components/pannel-collapse';
+import LoopItem from '@/components/loop-item';
 
-  // const blocks = await db.block.findMany();
+const Home = () => {
+  const [htmlContent, setHtmlContent] = useState<{ key: string; content: string }[]>([]);
+
+  interface Item {
+    key: string,
+    label: string, 
+    code: string[];
+  }
+
+  const handleItemClick = (item: Item) => {
+    const updatedContent = item.code.map(code => ({
+      key: Math.random().toString(),
+      content: code
+    }));
+    setHtmlContent(updatedContent);
+  };
+
+  const handleCodeChange = (newCode: string, index: number) => {
+    setHtmlContent(prevContent => {
+      const updatedContent = [...prevContent];
+      updatedContent[index] = { ...updatedContent[index], content: newCode };
+      return updatedContent;
+    });
+  };
+
   return (
-    <div className="w-screen h-screen flex">
-      <div className="w-1/6 h-full bg-gray-100">
-        <Collapse />
+    <div className="flex p-4 gap-4 w-full h-screen">
+      <div className="w-[200px] flex-shrink-0">
+        <PannelCollapse onItemClick={handleItemClick} />
       </div>
-      <div className="w-5/6 h-full bg-grey-100 flex">
-        <div className="w-1/2 h-full">
-          <CodeEdit />
+      <div className="flex flex-col w-full overflow-auto">
+        <div className="flex flex-col gap-4">
+          {htmlContent.map(({ key, content }, index) => (
+            <LoopItem
+              key={key}
+              content={content}
+              onCodeChange={(newCode) => handleCodeChange(newCode, index)}
+            />
+          ))}
         </div>
-        {/* <div className="w-1/2 h-full bg-white p-4 overflow-auto">
-          <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
-        </div> */}
       </div>
     </div>
   );
