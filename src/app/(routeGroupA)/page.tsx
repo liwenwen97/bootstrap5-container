@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react';
-// import { db } from "@/db";
 import PannelCollapse from '@/components/pannel-collapse';
 import LoopItem from '@/components/loop-item';
 
@@ -8,15 +7,15 @@ const Home = () => {
   const [htmlContent, setHtmlContent] = useState<{ key: string; content: string }[]>([]);
 
   interface Item {
-    key: string,
-    label: string, 
+    key: string;
+    label: string;
     code: string[];
   }
 
   const handleItemClick = (item: Item) => {
     const updatedContent = item.code.map(code => ({
       key: Math.random().toString(),
-      content: code
+      content: code,
     }));
     setHtmlContent(updatedContent);
   };
@@ -40,6 +39,7 @@ const Home = () => {
             <LoopItem
               key={key}
               content={content}
+              instanceId={`loop-item-${key}`}
               onCodeChange={(newCode) => handleCodeChange(newCode, index)}
             />
           ))}
